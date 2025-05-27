@@ -1,0 +1,28 @@
+- name: Install pip for Python3
+  apt:
+    name: python3-pip
+    state: present
+    update_cache: true
+
+- name: Install Docker Python module
+  pip:
+    name: docker
+    executable: pip3
+
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+    update_cache: true
+
+- name: Start MySQL container
+  docker_container:
+    name: mysql
+    image: mysql:5.7
+    state: started
+    restart_policy: always
+    ports:
+      - "3306:3306"
+    env:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: todos

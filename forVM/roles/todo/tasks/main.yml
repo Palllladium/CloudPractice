@@ -1,0 +1,36 @@
+- name: Install pip for Python3
+  apt:
+    name: python3-pip
+    state: present
+    update_cache: true
+
+- name: Install Docker Python module
+  pip:
+    name: docker
+    executable: pip3
+
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+    update_cache: true
+
+- name: Download Docker-image of todo-app
+  docker_image:
+    name: antonaleks/101-todo-app
+    tag: latest
+    source: pull
+
+- name: Start todo-app container
+  docker_container:
+    name: todo
+    image: antonaleks/101-todo-app:latest
+    state: started
+    restart_policy: always
+    ports:
+      - "3000:80"
+    env:
+      DB_HOST: 192.168.56.11
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_NAME: todos

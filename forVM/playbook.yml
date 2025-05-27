@@ -1,0 +1,9 @@
+- hosts: db
+  become: yes
+  roles:
+    - mysql
+
+- hosts: app
+  become: yes
+  roles:
+    - todo
